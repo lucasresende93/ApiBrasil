@@ -22,9 +22,6 @@ namespace ApiBrasil.Services
         {
             var responseAPI = await _httpClient.GetAsync($"https://brasilapi.com.br/api/banks/v1/{id}");
 
-
-            var contentResponse = await responseAPI.Content.ReadAsStringAsync();
-
             if (!responseAPI.IsSuccessStatusCode)
             {
                 return new GenericResponse<Banks>
@@ -33,16 +30,14 @@ namespace ApiBrasil.Services
                     ErrorMessage = $"Erro ao acessar API: {responseAPI.ReasonPhrase}"
                 };
             }
+
+            var contentResponse = await responseAPI.Content.ReadAsStringAsync();         
             var JSONresponse = JsonSerializer.Deserialize<Banks>(contentResponse);
-
-
-
             return new GenericResponse<Banks>
             {
                 Data = JSONresponse,
                 HttpCode = responseAPI.StatusCode
             };
-
         }
 
         public async Task<GenericResponse<IEnumerable<Banks>>> GetAllBanks()
@@ -59,8 +54,8 @@ namespace ApiBrasil.Services
                     ErrorMessage = $"Erro ao acessar API: {responseAPI.ReasonPhrase}"
                 };
             }
-            var contentResponse = await responseAPI.Content.ReadAsStringAsync();
 
+            var contentResponse = await responseAPI.Content.ReadAsStringAsync();
             var JSONresponse = JsonSerializer.Deserialize<IEnumerable<Banks>>(contentResponse, new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true

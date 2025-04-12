@@ -24,6 +24,7 @@ namespace ApiBrasil.Controllers
         public async Task<IActionResult> AllBanks()
         {
             var response = await _bancoService.GetAllBanks();
+
             if (response.Data == null || !response.Data.Any())
             {
                 return NotFound("Banks not found.");
@@ -37,7 +38,7 @@ namespace ApiBrasil.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> BankById(int id)
         {
-            if (id <= 0)
+            if (id == null)
             {
                 return BadRequest("ID inválido.");
             }
